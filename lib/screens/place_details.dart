@@ -10,11 +10,19 @@ class PlaceDetailsScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(place.name),
       ),
-      body: Center(
-        child: Text(
-          place.name,
-          style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
-        ),
+      body: Stack(
+        children: [
+          Image.file(
+            place.img,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 250,
+          ),
+          // Text(
+          //   place.name,
+          //   style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+          // ),
+        ],
       ),
     );
   }

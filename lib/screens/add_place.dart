@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:favorite_places/widgets/image_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,14 +10,26 @@ class AddPlaceScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var _name;
-    final _formKey = GlobalKey<FormState>();
+    var name;
+    late final File? img;
 
-    void _submitForm() {
-      if (_formKey.currentState!.validate()) {
-        _formKey.currentState!.save();
-        ref.read(favoritePlacesProvider.notifier).addFavoritePlace(_name);
+    final formKey = GlobalKey<FormState>();
+
+    void onAddImage(File image) {
+      img = image;
+    }
+
+    void submitForm() {
+      if (formKey.currentState!.validate() || img != null) {
+        formKey.currentState!.save();
+        ref.read(favoritePlacesProvider.notifier).addFavoritePlace(name, img!);
         Navigator.of(context).pop();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please enter a place and add an image'),
+          ),
+        );
       }
     }
 
@@ -27,7 +41,7 @@ class AddPlaceScreen extends ConsumerWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-              key: _formKey,
+              key: formKey,
               child: Column(
                 children: [
                   TextFormField(
@@ -45,13 +59,15 @@ class AddPlaceScreen extends ConsumerWidget {
                       return null;
                     },
                     onSaved: (value) {
-                      _name = value;
+                      name = value;
                     },
                   ),
                   const SizedBox(height: 16.0),
+                  ImageInput(onAddImage: onAddImage),
+                  const SizedBox(height: 16.0),
                   ElevatedButton.icon(
                     onPressed: () {
-                      _submitForm();
+                      submitForm();
                     },
                     icon: const Icon(Icons.add),
                     label: const Text('Submit'),
