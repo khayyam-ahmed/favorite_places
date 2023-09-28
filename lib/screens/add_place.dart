@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:favorite_places/widgets/image_input.dart';
+import 'package:favorite_places/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -64,6 +65,8 @@ class AddPlaceScreen extends ConsumerWidget {
                   ),
                   const SizedBox(height: 16.0),
                   ImageInput(onAddImage: onAddImage),
+                  const SizedBox(height: 16.0),
+                  const LocationInput(),
                   const SizedBox(height: 16.0),
                   ElevatedButton.icon(
                     onPressed: () {
