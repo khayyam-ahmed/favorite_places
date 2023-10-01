@@ -1,41 +1,36 @@
 import 'dart:convert';
 
-import 'package:favorite_places/providers/googlemaps_api_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:location/location.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:favorite_places/models/place.dart';
 
-// final apiKey = Provider((ref) {
-//   // use ref to obtain other providers
-//   final api = ref.read(googleMapsAPIProvider);
+// Retrieve the Google Maps API key from the .env file.
+final kApiKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
 
-//   return api;
-// });
-
-class LocationInput extends ConsumerStatefulWidget {
+class LocationInput extends StatefulWidget {
   const LocationInput({super.key, required this.onAddLocation});
 
   final void Function(PlaceLocation placeLocation) onAddLocation;
 
   @override
-  ConsumerState<LocationInput> createState() => _LocationInputState();
+  State<LocationInput> createState() => _LocationInputState();
 }
 
-class _LocationInputState extends ConsumerState<LocationInput> {
+class _LocationInputState extends State<LocationInput> {
   PlaceLocation? _pickedLocation;
   bool isGettingLocation = false;
 
-  String locationImage({required String kApiKey}) {
+  String get locationImage {
     if (_pickedLocation == null) return '';
     final lat = _pickedLocation!.latitude;
     final lng = _pickedLocation!.longitude;
     return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=$kApiKey";
   }
 
-  void getCurrentLocation(String kApiKey) async {
+  void getCurrentLocation() async {
     // Called on a button press, this method will get the current location of the device.
     //
     /// The following snippet is from the location package documentation (https://pub.dev/packages/location).
@@ -104,7 +99,6 @@ class _LocationInputState extends ConsumerState<LocationInput> {
 
   @override
   Widget build(BuildContext context) {
-    String kApiKey = ref.read(googleMapsAPIProvider);
     Widget previewContent = Text(
       'No location chosen',
       textAlign: TextAlign.center,
@@ -115,7 +109,7 @@ class _LocationInputState extends ConsumerState<LocationInput> {
 
     if (_pickedLocation != null) {
       previewContent = Image.network(
-        locationImage(kApiKey: kApiKey),
+        locationImage,
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
@@ -145,7 +139,7 @@ class _LocationInputState extends ConsumerState<LocationInput> {
             TextButton.icon(
               icon: const Icon(Icons.location_on),
               label: const Text('Get Current Location'),
-              onPressed: () => getCurrentLocation(kApiKey),
+              onPressed: () => getCurrentLocation(),
             ),
             TextButton.icon(
               icon: const Icon(Icons.map),

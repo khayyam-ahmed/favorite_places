@@ -1,5 +1,6 @@
 import 'package:favorite_places/screens/places.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +28,10 @@ final theme = ThemeData().copyWith(
   ),
 );
 
-void main() {
+void main() async {
+  /// Load the .env file from the assets folder.
+  /// For the time being, it only includes the Google Maps API key.
+  await dotenv.load(fileName: "assets/.env");
   runApp(
     const ProviderScope(child: MyApp()),
   );

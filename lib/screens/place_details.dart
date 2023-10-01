@@ -1,20 +1,23 @@
 import 'package:favorite_places/models/place.dart';
-import 'package:favorite_places/providers/googlemaps_api_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlaceDetailsScreen extends ConsumerWidget {
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+class PlaceDetailsScreen extends StatelessWidget {
   const PlaceDetailsScreen({super.key, required this.place});
   final Place place;
 
-  String locationImage({required String apiKey}) {
+  String get locationImage {
+    /// Retrieve the Google Maps API key from the .env file.
+    /// Returns the URL of the static map image.
+    final apiKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
     final lat = place.location.latitude;
     final lng = place.location.longitude;
     return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=$apiKey";
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(place.name),
@@ -36,7 +39,8 @@ class PlaceDetailsScreen extends ConsumerWidget {
                 CircleAvatar(
                   radius: 70,
                   backgroundImage: NetworkImage(
-                      locationImage(apiKey: ref.read(googleMapsAPIProvider))),
+                    locationImage,
+                  ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(16.0),
@@ -59,10 +63,6 @@ class PlaceDetailsScreen extends ConsumerWidget {
               ],
             ),
           )
-          // Text(
-          //   place.name,
-          //   style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
-          // ),
         ],
       ),
     );
