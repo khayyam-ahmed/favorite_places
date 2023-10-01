@@ -1,11 +1,20 @@
 import 'package:favorite_places/models/place.dart';
+import 'package:favorite_places/providers/googlemaps_api_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlaceDetailsScreen extends StatelessWidget {
+class PlaceDetailsScreen extends ConsumerWidget {
   const PlaceDetailsScreen({super.key, required this.place});
   final Place place;
+
+  String locationImage({required String apiKey}) {
+    final lat = place.location.latitude;
+    final lng = place.location.longitude;
+    return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=$apiKey";
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(place.name),
@@ -16,8 +25,40 @@ class PlaceDetailsScreen extends StatelessWidget {
             place.img,
             fit: BoxFit.cover,
             width: double.infinity,
-            height: 250,
+            height: double.infinity,
           ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Column(
+              children: [
+                CircleAvatar(
+                  radius: 70,
+                  backgroundImage: NetworkImage(
+                      locationImage(apiKey: ref.read(googleMapsAPIProvider))),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Colors.transparent, Colors.black54],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                  child: Text(
+                    place.location.address,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        ),
+                  ),
+                ),
+              ],
+            ),
+          )
           // Text(
           //   place.name,
           //   style: TextStyle(color: Theme.of(context).colorScheme.onBackground),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/widgets/image_input.dart';
 import 'package:favorite_places/widgets/location_input.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,9 @@ class AddPlaceScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var name;
+    late final String? name;
     late final File? img;
+    late final PlaceLocation? location;
 
     final formKey = GlobalKey<FormState>();
 
@@ -20,10 +22,16 @@ class AddPlaceScreen extends ConsumerWidget {
       img = image;
     }
 
+    void onAddLocation(PlaceLocation placeLocation) {
+      location = placeLocation;
+    }
+
     void submitForm() {
-      if (formKey.currentState!.validate() || img != null) {
+      if (formKey.currentState!.validate() || img != null || location != null) {
         formKey.currentState!.save();
-        ref.read(favoritePlacesProvider.notifier).addFavoritePlace(name, img!);
+        ref
+            .read(favoritePlacesProvider.notifier)
+            .addFavoritePlace(name!, img!, location!);
         Navigator.of(context).pop();
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -66,7 +74,7 @@ class AddPlaceScreen extends ConsumerWidget {
                   const SizedBox(height: 16.0),
                   ImageInput(onAddImage: onAddImage),
                   const SizedBox(height: 16.0),
-                  const LocationInput(),
+                  LocationInput(onAddLocation: onAddLocation),
                   const SizedBox(height: 16.0),
                   ElevatedButton.icon(
                     onPressed: () {
