@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+/// Retrieve the Google Maps API key from the .env file.
+final apiKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
+
 class PlaceDetailsScreen extends StatelessWidget {
   const PlaceDetailsScreen({super.key, required this.place});
   final Place place;
 
   String get locationImage {
-    /// Retrieve the Google Maps API key from the .env file.
     /// Returns the URL of the static map image.
-    final apiKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
     final lat = place.location.latitude;
     final lng = place.location.longitude;
     return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=$apiKey";
