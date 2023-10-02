@@ -13,6 +13,7 @@ migrate_working_dir/
 # Personal Key files
 assets/.env
 
+
 # IntelliJ related
 *.iml
 *.ipr
