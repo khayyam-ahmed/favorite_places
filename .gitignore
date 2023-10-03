@@ -12,7 +12,7 @@ migrate_working_dir/
 
 # Personal Key files
 assets/.env
-
+android/app/src/main/AndroidManifest.xml
 
 # IntelliJ related
 *.iml
