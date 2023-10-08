@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:favorite_places/screens/map.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +32,31 @@ class _LocationInputState extends State<LocationInput> {
     return "https://maps.googleapis.com/maps/api/staticmap?center=$lat,$lng&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:A%7C$lat,$lng&key=$kApiKey";
   }
 
+  void saveLocation(double? lat, double? lng) async {
+    /// This method is called when the user selects a location on the map.
+    /// 1. Making a request to the Google Maps Geocoding API (using the data from Step 2) to get the address
+    /// 2. Getting a formatted address from the response
+    /// 3. Setting the state with the formatted address
+    if (lat == null || lng == null) return;
+
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$kApiKey');
+
+    final response = await http.get(url);
+    final resData = json.decode(response.body);
+    final formattedAddress = resData['results'][0]['formatted_address'];
+
+    setState(() {
+      _pickedLocation = PlaceLocation(
+        latitude: lat,
+        longitude: lng,
+        address: formattedAddress,
+      );
+      widget.onAddLocation(_pickedLocation!);
+      isGettingLocation = false;
+    });
+  }
+
   void getCurrentLocation() async {
     // Called on a button press, this method will get the current location of the device.
     //
@@ -40,6 +67,8 @@ class _LocationInputState extends State<LocationInput> {
     /// 3. Checking if the app has permission to access location data
     /// 4. Requesting permission if it does not have permission
     /// 5. Getting the location data
+    /// 6. Getting the latitude and longitude from the location data
+    /// 7. Calling `saveLocation` with the latitude and longitude.
 
     setState(() {
       isGettingLocation = true;
@@ -68,33 +97,21 @@ class _LocationInputState extends State<LocationInput> {
     }
 
     locationData = await location.getLocation();
-
-    /// The following snippet is:
-    /// 1. Getting the latitude and longitude from the location data
-    /// 2. Making a request to the Google Maps Geocoding API (using the data from Step 2) to get the address
-    /// 3. Getting a formatted address from the response
-    /// 4. Setting the state with the formatted address
-
     final lat = locationData.latitude;
     final lng = locationData.longitude;
-    if (lat == null || lng == null) return;
 
-    final url = Uri.parse(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$lat,$lng&key=$kApiKey');
+    saveLocation(lat, lng);
+  }
 
-    final response = await http.get(url);
-    final resData = json.decode(response.body);
-    final formattedAddress = resData['results'][0]['formatted_address'];
-
-    setState(() {
-      _pickedLocation = PlaceLocation(
-        latitude: lat,
-        longitude: lng,
-        address: formattedAddress,
-      );
-      widget.onAddLocation(_pickedLocation!);
-      isGettingLocation = false;
-    });
+  void _selectLocationOnMap() async {
+    /// This method is called when the user taps the "Select on Map" button.
+    /// It will open the map screen and wait for the user to select a location.
+    /// Once the user selects a location, it will call `saveLocation` with the latitude and longitude.
+    /// If the user does not select a location, it will return.
+    LatLng? pickedLocation = await Navigator.of(context).push<LatLng>(
+        MaterialPageRoute(builder: (ctx) => const MapScreen.selectLocation()));
+    if (pickedLocation == null) return;
+    saveLocation(pickedLocation.latitude, pickedLocation.longitude);
   }
 
   @override
@@ -144,7 +161,7 @@ class _LocationInputState extends State<LocationInput> {
             TextButton.icon(
               icon: const Icon(Icons.map),
               label: const Text('Select on Map'),
-              onPressed: () {},
+              onPressed: _selectLocationOnMap,
             ),
           ],
         )
