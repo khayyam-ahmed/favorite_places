@@ -165,5 +165,5 @@ flutter run
 ```
 
 # Credits
-This project is based on the tutorial by Maximilian Schwarzmüller and was created as a learning exercise in Flutter, Dart, and Riverpod state management.
+This project is based on the tutorial by Maximilian Schwarzmüller and was created as a learning exercise in Flutter, Dart, Riverpod state management and Google Cloud Console.
 
