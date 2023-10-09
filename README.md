@@ -45,25 +45,29 @@ favorite_places:
 
 The Home Screen displays a list of favorite places that the user has saved. Users can tap on a place to view its details.
 
-![Home Screen](assets/home_screen.png)
+<!-- ![Home Screen](assets/home_screen.png) -->
+<img src="assets/home_screen.png" width="360" height="820">
 
 ### Add Place Screen
 
 The Add Place Screen allows users to add a new favorite place. Users can enter a place name, take a picture, and select the location either manually on the map or by using the device's GPS.
 
-![Add Place Screen](assets/add_place_screen.png)
+<!-- ![Add Place Screen](assets/add_place_screen.png) -->
+<img src="assets/add_place_screen.png" width="360" height="820">
 
 ### Place Details Screen
 
 The Place Details Screen displays the details of a saved place, including its name, image, address, and a map showing the location. Users can tap on the map to view it in a larger size.
 
-![Place Details Screen](assets/place_details_screen.png)
+<!-- ![Place Details Screen](assets/place_details_screen.png) -->
+<img src="assets/place_details_screen.png" width="360" height="820">
 
 ### Map Screen
 
 The Map Screen displays a map with a marker at the user's current location. Users can also tap on the map to select a location.
 
-![Map Screen](assets/map_screen.png)
+<!-- ![Map Screen](assets/map_screen.png) -->
+<img src="assets/map_screen.png" width="360" height="820">
 
 ## Packages Used
 
