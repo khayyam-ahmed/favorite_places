@@ -13,10 +13,12 @@ class PlaceLocation {
 }
 
 class Place {
-  Place({required this.name, required this.img, required this.location})
-      : id = const Uuid().v4() {
-    // print(this.id);
-  }
+  Place({
+    required this.name,
+    required this.img,
+    required this.location,
+    String? id,
+  }) : id = id ?? const Uuid().v4();
   final String id;
   final String name;
   final File img;
