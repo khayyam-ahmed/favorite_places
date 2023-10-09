@@ -2,7 +2,7 @@
 
 This Flutter project is a guided project inspired by Maximilian Schwarzmüller's Udemy Course: [Learn Flutter & Dart to Build iOS & Android Apps](https://www.udemy.com/course/learn-flutter-dart-to-build-ios-android-apps/).
 
-The purpose of this project was to familiarize students with native device features, such as Camera, GPS, and Storage. In the course, you'll learn how to create a mobile app that allows users to save their favorite places by taking pictures, adding titles, and recording the location.
+The purpose of this project was to get familiar with native device features, such as Camera, GPS, and Storage. In the course, you'll learn how to create a mobile app that allows users to save their favorite places by taking pictures, adding titles, and recording the location.
 
 ## Project Features
 
