@@ -6,7 +6,7 @@ The purpose of this project was to get familiar with native device features, suc
 
 ## Project Features
 
-- Learn state management using the Riverpod library.
+- Apply state management using the Riverpod library.
 - Capture and save favorite places with images.
 - Retrieve the user's current location using GPS.
 - Utilize Google Maps API to display maps and location addresses.
