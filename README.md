@@ -144,20 +144,21 @@ GoogleMap(
 
 ## Getting Started
 
-Before you start using the project, make sure to replace the placeholder Google Maps API Key in the `.env` file with your own API key obtained from Google Cloud.
+Before you start using the project, make sure to replace the placeholder Google Maps API Key in the `.env` file with your own API key obtained from Google Cloud. (You can get one [here](https://developers.google.com/maps/documentation/android-sdk/get-api-key).)
 
 ```dotenv
 GOOGLE_MAPS_API_KEY='your_api_key_here'
 ```
 
+Also, see the packages documentation to adjust your Android and iOS projects accordingly.
+
 # INSTALLATION
 1. Clone this repository to your local machine:
-2. Copy code
 ```bash
-git clone <repository-url>
+git clone https://github.com/khayyam-ahmed/favorite_places.git
 ```
-3. Replace the API key in the .env file with your own.
-4. Run the app on your device or emulator:
+2. Create a .env file in the assets folder and add you API key.
+3. Run the app on your device or emulator:
 ```bash
 flutter pub get
 flutter run
